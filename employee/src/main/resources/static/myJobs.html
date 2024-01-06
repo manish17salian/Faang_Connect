@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>FAANGConnect</title>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta name="MobileOptimized" content="320">
+    <!--Start Style -->
+    <link rel="stylesheet" type="text/css" href="css/fonts.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/icofont.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" id="theme-change" type="text/css" href="">
+</head>
+
+<body>
+<div id="loader_body">
+
+</div>
+<div id="error_body">
+
+</div>
+<!-- Main Body -->
+<div class="page-wrapper">
+    <!-- Header Start -->
+    <header class="header-wrapper main-header">
+        <div class="header-inner-wrapper">
+            <div class="logo-wrapper">
+                <a href="/" class="admin-logo">
+                    <img src="img/faangconnect_white.png" alt="">
+                </a>
+            </div>
+            <div class="header-right">
+                <div class="header-left">
+                    <div class="header-links">
+                        <a href="javascript:void(0);" class="toggle-btn">
+                            <span></span>
+                        </a>
+                    </div>
+                </div>
+                <div class="header-controls">
+                    <div class="notification-wrapper header-links">
+                        <a href="javascript:void(0);" class="notification-info" onmouseover="updateNotificationTab()">
+                                <span class="header-icon">
+                                    <svg enable-background="new 0 0 512 512" viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="m450.201 407.453c-1.505-.977-12.832-8.912-24.174-32.917-20.829-44.082-25.201-106.18-25.201-150.511 0-.193-.004-.384-.011-.576-.227-58.589-35.31-109.095-85.514-131.756v-34.657c0-31.45-25.544-57.036-56.942-57.036h-4.719c-31.398 0-56.942 25.586-56.942 57.036v34.655c-50.372 22.734-85.525 73.498-85.525 132.334 0 44.331-4.372 106.428-25.201 150.511-11.341 24.004-22.668 31.939-24.174 32.917-6.342 2.935-9.469 9.715-8.01 16.586 1.473 6.939 7.959 11.723 15.042 11.723h109.947c.614 42.141 35.008 76.238 77.223 76.238s76.609-34.097 77.223-76.238h109.947c7.082 0 13.569-4.784 15.042-11.723 1.457-6.871-1.669-13.652-8.011-16.586zm-223.502-350.417c0-14.881 12.086-26.987 26.942-26.987h4.719c14.856 0 26.942 12.106 26.942 26.987v24.917c-9.468-1.957-19.269-2.987-29.306-2.987-10.034 0-19.832 1.029-29.296 2.984v-24.914zm29.301 424.915c-25.673 0-46.614-20.617-47.223-46.188h94.445c-.608 25.57-21.549 46.188-47.222 46.188zm60.4-76.239c-.003 0-213.385 0-213.385 0 2.595-4.044 5.236-8.623 7.861-13.798 20.104-39.643 30.298-96.129 30.298-167.889 0-63.417 51.509-115.01 114.821-115.01s114.821 51.593 114.821 115.06c0 .185.003.369.01.553.057 71.472 10.25 127.755 30.298 167.286 2.625 5.176 5.267 9.754 7.861 13.798z"></path></svg>
+                                </span>
+                            <span class="count-notification"></span>
+                        </a>
+                        <div class="recent-notification">
+                            <div class="drop-down-header">
+                                <h4>All Notification</h4>
+                                <p>You have <span class="count-new-notifications">0</span> new notifications</p>
+                            </div>
+                            <ul id="notificationList">
+                                <!-- func will populate this list -->
+                            </ul>
+                            <div class="drop-down-footer">
+                                <a href="javascript:void(0);" class="btn sm-btn">
+                                    View All
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="user-info-wrapper header-links">
+                        <a href="javascript:void(0);" class="user-info">
+                            <img src="img/user.png" alt="" class="user-img">
+                        </a>
+                        <div class="user-info-box">
+                            <div class="drop-down-header">
+                                <h6 id="user" style="color: white;"></h6>
+                            </div>
+                            <ul>
+                                <!-- <li>
+                                    <a href="profile.html">
+                                        <i class="far fa-edit"></i> Edit Profile
+                                    </a>
+                                </li> -->
+                                <li>
+                                    <a href="index.html">
+                                        <i class="fas fa-sign-out-alt"></i> logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Sidebar Start -->
+    <aside class="sidebar-wrapper">
+        <div class="side-menu-wrap">
+            <ul class="main-menu">
+
+                <li>
+                    <a href="home.html">
+                            <span class="icon-menu feather-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-briefcase"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                            </span>
+                        <span class="menu-text">
+                                Job Feed
+                            </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="myJobs.html">
+                            <span class="icon-menu feather-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                            </span>
+                        <span class="menu-text">
+                                My Jobs
+                            </span>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </aside>
+    <!-- Container Start -->
+    <div class="page-wrapper">
+        <div class="main-content">
+            <!-- Page Title Start -->
+            <div class="row">
+                <div class="colxl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-title-wrapper">
+                        <div class="page-title-box ad-title-box-use">
+                            <h4 class="page-title">Applied Jobs</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Table Start -->
+            <div class="row">
+                <!-- Styled Table Card-->
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card table-card">
+                        <div class="card-header pb-0">
+                            <h4>Jobs Applied List</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-holder">
+                                <div class="table-responsive">
+                                    <table class="table table-styled mb-0">
+                                        <thead>
+                                        <tr>
+                                            <th>Job ID</th>
+                                            <th>Company Name</th>
+                                            <th>Date Applied</th>
+                                            <th>Job Title</th>
+                                            <th>Location</th>
+                                            <th>Salary</th>
+                                            <th>Skills</th>
+                                            <th>View Details</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="jobs">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ad-footer-btm">
+                <p>© 2024 Kamal Cheaito, Manish Salian, Qinghan Huang, Ridhima Singh. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+    <div id="overlay" onclick="closePopup()"></div>
+    <div id="popup" class="popup">
+
+
+    </div>
+</div>
+<!-- Script Start -->
+<script src="js/app.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/custom.js"></script>
+<script>
+    function updateNotificationTab() {
+    console.log('Fetching notification messages from the server...');
+
+    // Fetch notification messages from the server
+    fetch('http://localhost:8080/getNotificationMessages')
+        .then(response => {
+            console.log('Received response from the server:', response);
+            return response.json();
+        })
+        .then(messages => {
+            console.log('Received notification messages:', messages);
+
+            const notificationWrapper = document.querySelector('.notification-wrapper');
+            const countNotification = notificationWrapper.querySelector('.count-notification');
+            const countNewNotifications = notificationWrapper.querySelector('.count-new-notifications');
+            const notificationList = document.getElementById('notificationList');
+
+            // Update count
+            console.log('Updating notification count:', messages.length);
+            countNotification.textContent = messages.length;
+            countNewNotifications.textContent = messages.length;
+
+            // Clear existing notifications
+            console.log('Clearing existing notifications...');
+            notificationList.innerHTML = '';
+
+            // Add new notifications
+            console.log('Adding new notifications...');
+            messages.forEach((message, index) => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    <a href="javascript:void(0);">
+                    <a href="javascript:void(0);">
+                        <h5><i class="fas fa-exclamation-circle mr-2"></i>Notification ${index + 1}</h5>
+                        <p>${message}</p>
+                    </a>
+                `;
+                notificationList.appendChild(listItem);
+            });
+
+            console.log('Notification tab updated successfully!');
+        })
+        .catch(error => {
+            console.error('Error fetching notification messages:', error);
+        });
+}
+
+// Initial call to updateNotificationTab when the page loads
+updateNotificationTab();
+
+</script>
+</body>
+</html>

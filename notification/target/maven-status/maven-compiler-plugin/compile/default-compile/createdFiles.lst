@@ -1,0 +1,8 @@
+service\notification\models\JobApplicationRequest.class
+service\notification\models\MessageSender.class
+service\notification\models\Notification.class
+service\notification\models\Receiver.class
+service\notification\models\Runner.class
+service\notification\controller\MessageController.class
+service\notification\models\QueueConfig.class
+service\NotificationApplication.class

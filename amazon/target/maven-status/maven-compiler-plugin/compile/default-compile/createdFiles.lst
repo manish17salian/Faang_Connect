@@ -1,0 +1,4 @@
+service\AmazonApplication.class
+service\controllers\AzJobPostController.class
+service\controllers\AzJobFindController.class
+service\controllers\AzJobApplyController.class
