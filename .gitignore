@@ -1,0 +1,8 @@
+# Ignore VS Code settings
+.vscode/
+
+# Ignore IntelliJ IDEA settings
+.idea/
+
+# Ignore Maven target folder
+**/target/
