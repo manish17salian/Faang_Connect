@@ -1,0 +1,2 @@
+service\core\models\Job.class
+service\core\repositories\JobRepository.class

@@ -1,0 +1,4 @@
+service\AppleApplication.class
+service\controllers\ApJobApplyController.class
+service\controllers\ApJobPostController.class
+service\controllers\ApJobFindController.class
