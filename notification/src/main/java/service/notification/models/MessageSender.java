@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,14 +18,38 @@ public class MessageSender {
 	private final RabbitTemplate rabbitTemplate;
 	private final List<String> notificationMessages;
 
+	// public void setupCallbacks() {
+    //     System.out.println("Called Setup");
+	// 	rabbitTemplate.setConfirmCallback((correlationData, ack, cause) -> {
+	// 		if (ack) {
+	// 			System.out.println("Message sent successfully");
+	// 		} else {
+	// 			System.out.println("Message sending failed due to " + cause);
+	// 		}
+	// 	});
+
+	// 	rabbitTemplate.setReturnCallback((message, replyCode, replyText, exchange, routingKey) -> {
+    //         System.out.println("Returned message: " + new String(message.getBody()));
+    //     });
+	// }
+
 	@Autowired
 	public MessageSender(RabbitTemplate rabbitTemplate) {
 		this.rabbitTemplate = rabbitTemplate;
 		this.notificationMessages = new ArrayList<>();
 	}
 
+
+	// @PostConstruct
+    // public void init() {
+    //     System.out.println("called Init");
+    //     setupCallbacks();
+    // }
+
+
 	public void sendMessage(String queueName, String message) {
-		rabbitTemplate.convertAndSend(queueName, message);
+		System.out.println(queueName + "/" +message);
+		rabbitTemplate.convertAndSend("", queueName, "Hello My Name is Manish");
 		String companyName = extractCompanyName(queueName);
 
 		 SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -33,6 +60,7 @@ public class MessageSender {
 		System.out.println(notificationMessage);
 		notificationMessages.add(notificationMessage);
 	}
+
 
 	public List<String> getNotificationMessages() {
 		return new ArrayList<>(notificationMessages);

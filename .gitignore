@@ -4,7 +4,14 @@
 # Ignore IntelliJ IDEA settings
 .idea/
 
+.jar
 # Ignore Maven target folder
 **/target/
 
 *.class
+
+*.jar
+
+*.jar.original
+
+.classpath

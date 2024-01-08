@@ -31,9 +31,7 @@ public class AzJobApplyController {
     @PostMapping(value = "/applyJob", consumes = "application/json")
     public ResponseEntity<?> applyJob(@RequestBody List<String> info) {
         try {
-            System.out.println(info);
             updateJob(info);
-
             return ResponseEntity.status(HttpStatus.CREATED).body(Collections.singletonMap("success", true));
 
         } catch (Exception e) {
@@ -45,10 +43,8 @@ public class AzJobApplyController {
 
     @RabbitListener(queues = "amazonJobQueue")
     public void receiveJobApplication(Message message) {
-        System.out.println("Message: " + message);
+        System.out.println("Message from Amazon: " + message);
         Object content = message.getBody();
-
-
         if (content instanceof byte[]) {
             String jsonString = new String((byte[]) content);
             System.out.println("Received job application in Amazon : " + jsonString);
