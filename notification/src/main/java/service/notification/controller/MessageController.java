@@ -8,6 +8,8 @@ import service.notification.models.Receiver;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,6 +25,21 @@ public class MessageController {
     private final RabbitTemplate rabbitTemplate;
     private final Receiver receiver;
     private final MessageSender messageSender;
+
+    public void setupCallbacks() {
+        System.out.println("Called Setup");
+		rabbitTemplate.setConfirmCallback((correlationData, ack, cause) -> {
+			if (ack) {
+				System.out.println("Message sent successfully");
+			} else {
+				System.out.println("Message sending failed due to " + cause);
+			}
+		});
+
+		rabbitTemplate.setReturnCallback((message, replyCode, replyText, exchange, routingKey) -> {
+            System.out.println("Returned message: " + new String(message.getBody()));
+        });
+	}
 
     @Autowired
     public MessageController(RabbitTemplate rabbitTemplate, Receiver receiver, MessageSender messageSender) {
@@ -47,13 +64,19 @@ public class MessageController {
     
     @PostMapping("/sendToQueue")
     public String sendToQueue(@RequestBody Map<String, String> payload) {
+        System.out.println("Something");
        String queueName = payload.get("queueName");
         String message = payload.get("message");
-
         messageSender.sendMessage(queueName, message);
-
         return "Message sent successfully!";
     }
+
+    @PostConstruct
+    public void init() {
+        System.out.println("called Init");
+        setupCallbacks();
+    }
+
     
     @GetMapping("/getNotificationMessages")
     public List<String> getNotificationMessages() {

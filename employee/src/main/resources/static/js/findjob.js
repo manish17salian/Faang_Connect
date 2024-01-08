@@ -331,7 +331,7 @@ function applyJob(jobID, companyName, title, location, salary, skills, descripti
                     message: title
                 };
                 console.log('Sending to sendToQueue:', JSON.stringify(queuePayload));
-                fetch('http://localhost:8080/sendToQueue', {
+                fetch('http://localhost:8087/sendToQueue', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
