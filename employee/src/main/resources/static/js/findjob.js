@@ -20,12 +20,16 @@ function getAllJobs() {
     })
         .then(response => response.json())
         .then(data => {
-            populateCompany(data);
-            populateSkillArray(data);
-            dataCopy = data;
-            populateTable(data);
-            setTimeout(removeLoader, 1000);
-            document.getElementById("user").innerHTML=email
+
+            if(Array.isArray(data)){
+                populateCompany(data);
+                populateSkillArray(data);
+                dataCopy = data;
+                populateTable(data);
+                setTimeout(removeLoader, 1000);
+                document.getElementById("user").innerHTML=email
+            }
+
 
         })
         .catch(error => {
@@ -35,7 +39,7 @@ function getAllJobs() {
 }
 
 function populateCompany(data) {
-    console.log(data);
+    
     data.forEach((el, i) => {
 
         if (el.companyName.toLowerCase() in jobData) {
@@ -50,7 +54,7 @@ function populateCompany(data) {
             }
         }
     })
-    console.log(jobData, 'JobData')
+    
     populateCompanyFilter(jobData)
 }
 
@@ -58,7 +62,7 @@ function populateTable(data) {
     const tableBody = document.getElementById('jobs');
     // Loop through the data and create table rows
     data.forEach(item => {
-        console.log(item)
+        
         const newRow = document.createElement('tr'); // Create a new table row
         // Create table cells and populate data
         newRow.innerHTML = `
@@ -179,7 +183,7 @@ function filterBySkill(skill) {
             querystring += query
 
         })
-        console.log(querystring)
+        
 
         fetch(`http://localhost:8080/findJobsBySkills?${querystring}`, {
             method: 'GET',
@@ -190,7 +194,10 @@ function filterBySkill(skill) {
             .then(response => response.json())
             .then(data => {
                 document.getElementById('jobs').innerHTML = '';
-                populateTable(data);
+                if(Array.isArray(data)){
+                    populateTable(data);
+
+                }
 
             })
             .catch(error => {
@@ -225,7 +232,7 @@ function filterByTitle() {
 function populateCompanyFilter(data) {
     let companyFilter = document.getElementById("company-filter");
     Object.keys(data).forEach((el, i) => {
-        console.log(el, "Job")
+        
         let newRow = document.createElement('li');
         newRow.addEventListener('click', function () {
             // Your onclick logic here
@@ -265,7 +272,7 @@ function callError() {
 }
 
 function showPopup(description, companyName, title, salary) {
-    console.log(description)
+    
     document.getElementById("popup").innerHTML = ''
     const body = document.createElement("div");
     body.innerHTML =
@@ -279,10 +286,6 @@ function showPopup(description, companyName, title, salary) {
                   <h1 class="modal-title" >${capitalizeFirstLetter(title)}</h1>
                   <h3 style="text-align: left;">Job Description</h3>
                   <p style="text-align: left; font-size: medium;">
-                  Remote is solving global remote organizations' biggest Challenge: employing anyone anywhere compliantly, We
-                    make it possible for businesses big and small to employ a global team by handling global payroll. benefits.
-                    taxes. and compliance Wearn more about how it works We•re backed by A• investors and our team is world-
-                    Class, literally and figuratively. as we're all scattered around the world
                     ${description}
                     </p>
                 <div style="display: flex; align-items: center; padding: 10px 0px;"><h3>Salary: </h3><p style="font-size: large;"> &nbsp;Euro ${salary} per year</p></div>
@@ -310,7 +313,6 @@ function applyJob(jobID, companyName, title, location, salary, skills, descripti
         info: [jobID, email, tdate, companyName.toLowerCase(), salary, title, location, skills, description]
     }
 
-    console.log(payload)
     fetch(`http://localhost:8080/applyJob`, {
         method: 'POST',  // Make sure it's 'POST', not 'Post'
         headers: {
@@ -320,7 +322,7 @@ function applyJob(jobID, companyName, title, location, salary, skills, descripti
     })
         .then(response => response.json())
         .then(data => {// notification call
-            console.log(data)
+            
             if (data.success) {
                 // Popup a message for successful application
                 alert('Job successfully applied');
@@ -330,7 +332,7 @@ function applyJob(jobID, companyName, title, location, salary, skills, descripti
                     queueName: companyName.toLowerCase() + 'JobQueue',
                     message: title
                 };
-                console.log('Sending to sendToQueue:', JSON.stringify(queuePayload));
+                
                 fetch('http://localhost:8087/sendToQueue', {
                     method: 'POST',
                     headers: {
@@ -338,14 +340,10 @@ function applyJob(jobID, companyName, title, location, salary, skills, descripti
                     },
                     body: JSON.stringify(queuePayload)
                 })
-                .then(response => response.text()) // Change to text() to see the raw response
+                .then(response => response.json()) // Change to text() to see the raw response
                 .then(responseText => {
-                    console.log('Response from sendToQueue:', responseText);
+                    
                     return responseText;
-                })
-                .then(responseJSON => JSON.parse(responseJSON))
-                .then(queueData => {
-                    console.log('sendToQueue response:', queueData);
                 })
                 .catch(error => {
                     console.log('Error sending to queue:', error);

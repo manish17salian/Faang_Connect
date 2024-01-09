@@ -49,7 +49,7 @@ public class JobFindController {
                 }
             }
     
-            if (serviceURLs.size() >= 5) {
+            if (serviceURLs.size() >= 1) {
                 System.out.println("Found 5 or more services.");
                 break;
             } else {
@@ -64,13 +64,28 @@ public class JobFindController {
             }
         }
     
-        if (serviceURLs.size() < 5) {
+        if (serviceURLs.size() < 1) {
             throw new IllegalStateException("Fewer than 5 services registered within the expected time.");
         }
     
         System.out.println("=========================================");
         System.out.println("Registered Services: " + serviceURLs);
         System.out.println("=========================================");
+
+            /*Running Code Locally*/
+        // serviceURLs = new ArrayList<>();
+        // List<String> serviceIds = discoveryClient.getServices();
+        // for (String serviceId : serviceIds) {
+        //     List<ServiceInstance> instances = discoveryClient.getInstances(serviceId);
+        //     for (ServiceInstance instance : instances) {
+        //         serviceURLs.add(instance.getUri().toString());
+        //     }
+        // }
+        // System.out.println("=========================================");
+        // System.out.println("=========================================");
+        // System.out.println(serviceURLs);
+        // System.out.println("=========================================");
+        // System.out.println("=========================================");
     
 
     }
