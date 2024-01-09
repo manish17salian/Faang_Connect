@@ -49,7 +49,7 @@ public class JobFindController {
                 }
             }
     
-            if (serviceURLs.size() >= 1) {
+            if (serviceURLs.size() >= 5) {
                 System.out.println("Found 5 or more services.");
                 break;
             } else {
@@ -64,7 +64,7 @@ public class JobFindController {
             }
         }
     
-        if (serviceURLs.size() < 1) {
+        if (serviceURLs.size() < 5) {
             throw new IllegalStateException("Fewer than 5 services registered within the expected time.");
         }
     
