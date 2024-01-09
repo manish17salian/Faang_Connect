@@ -246,16 +246,16 @@
 <script src="js/range.js"></script>
 <script>
     function updateNotificationTab() {
-    console.log('Fetching notification messages from the server...');
+    
 
     // Fetch notification messages from the server
-    fetch('http://localhost:8080/getNotificationMessages')
+    fetch('http://localhost:8087/getNotificationMessages')
         .then(response => {
-            console.log('Received response from the server:', response);
+            
             return response.json();
         })
         .then(messages => {
-            console.log('Received notification messages:', messages);
+            
 
             const notificationWrapper = document.querySelector('.notification-wrapper');
             const countNotification = notificationWrapper.querySelector('.count-notification');
@@ -263,16 +263,16 @@
             const notificationList = document.getElementById('notificationList');
 
             // Update count
-            console.log('Updating notification count:', messages.length);
+            
             countNotification.textContent = messages.length;
             countNewNotifications.textContent = messages.length;
 
             // Clear existing notifications
-            console.log('Clearing existing notifications...');
+            
             notificationList.innerHTML = '';
 
             // Add new notifications
-            console.log('Adding new notifications...');
+            
             messages.forEach((message, index) => {
                 const listItem = document.createElement('li');
                 listItem.innerHTML = `
@@ -284,7 +284,7 @@
                 notificationList.appendChild(listItem);
             });
 
-            console.log('Notification tab updated successfully!');
+            
         })
         .catch(error => {
             console.error('Error fetching notification messages:', error);

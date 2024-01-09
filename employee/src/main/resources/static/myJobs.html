@@ -187,7 +187,7 @@
     console.log('Fetching notification messages from the server...');
 
     // Fetch notification messages from the server
-    fetch('http://localhost:8080/getNotificationMessages')
+    fetch('http://localhost:8087/getNotificationMessages')
         .then(response => {
             console.log('Received response from the server:', response);
             return response.json();

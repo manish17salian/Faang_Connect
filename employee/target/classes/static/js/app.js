@@ -15,7 +15,7 @@ function getAppliedJobs() {
     })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
+            
             if (Array.isArray(data)){
                 populateTable(data);
             }else{
@@ -34,7 +34,7 @@ function populateTable(data) {
     // Loop through the data and create table rows
     data.forEach(item => {
         if (!existingJobs.has(item.jobID)) {
-            console.log(item, 'HTML')
+            
             const newRow = document.createElement('tr'); // Create a new table row
             // Create table cells and populate data
             newRow.innerHTML = `
@@ -118,7 +118,7 @@ function callError(){
 }
 
 function showPopup(description, companyName, title, salary) {
-    console.log(description)
+    
     document.getElementById("popup").innerHTML = ''
     const body = document.createElement("div");
     body.innerHTML =
