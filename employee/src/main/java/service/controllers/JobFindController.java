@@ -32,19 +32,46 @@ public class JobFindController {
 
     @PostConstruct
     private void initServiceUris() {
+        int maxRetries = 10; // Maximum retries
+        long retryDelay = 50000; // Delay between retries in milliseconds (5 seconds)
+        int retryCount = 0;
+    
         serviceURLs = new ArrayList<>();
-        List<String> serviceIds = discoveryClient.getServices();
-        for (String serviceId : serviceIds) {
-            List<ServiceInstance> instances = discoveryClient.getInstances(serviceId);
-            for (ServiceInstance instance : instances) {
-                serviceURLs.add(instance.getUri().toString());
+    
+        while (retryCount < maxRetries) {
+            List<String> serviceIds = discoveryClient.getServices();
+            serviceURLs.clear(); // Clear previous entries
+    
+            for (String serviceId : serviceIds) {
+                List<ServiceInstance> instances = discoveryClient.getInstances(serviceId);
+                for (ServiceInstance instance : instances) {
+                    serviceURLs.add(instance.getUri().toString());
+                }
+            }
+    
+            if (serviceURLs.size() >= 5) {
+                System.out.println("Found 5 or more services.");
+                break;
+            } else {
+                System.out.println("Waiting for services to register. Attempt " + (retryCount + 1) + "/" + maxRetries);
+                try {
+                    Thread.sleep(retryDelay); // Wait before retrying
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt(); // Restore the interrupted status
+                    throw new IllegalStateException("Interrupted while waiting for services to register", ex);
+                }
+                retryCount++;
             }
         }
+    
+        if (serviceURLs.size() < 5) {
+            throw new IllegalStateException("Fewer than 5 services registered within the expected time.");
+        }
+    
         System.out.println("=========================================");
+        System.out.println("Registered Services: " + serviceURLs);
         System.out.println("=========================================");
-        System.out.println(serviceURLs);
-        System.out.println("=========================================");
-        System.out.println("=========================================");
+    
 
     }
 
