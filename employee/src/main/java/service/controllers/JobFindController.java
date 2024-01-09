@@ -33,7 +33,7 @@ public class JobFindController {
     @PostConstruct
     private void initServiceUris() {
         int maxRetries = 10; // Maximum retries
-        long retryDelay = 50000; // Delay between retries in milliseconds (5 seconds)
+        long retryDelay = 50000; // Delay between retries in milliseconds (50 seconds)
         int retryCount = 0;
     
         serviceURLs = new ArrayList<>();
@@ -73,6 +73,7 @@ public class JobFindController {
         System.out.println("=========================================");
 
             /*Running Code Locally*/
+
         // serviceURLs = new ArrayList<>();
         // List<String> serviceIds = discoveryClient.getServices();
         // for (String serviceId : serviceIds) {
