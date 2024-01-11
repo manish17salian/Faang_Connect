@@ -1,4 +1,4 @@
-FROM openjdk:11
+FROM openjdk:11-jre-slim
 #RUN apk --no-cache add netcat-openbsd
 # RUN apt-get update && apt-get install -y netcat && rm -rf /var/lib/apt/lists/*
 #RUN apt-get update && apt-get install -y netcat-openbsd && rm -rf /var/lib/apt/lists/*
