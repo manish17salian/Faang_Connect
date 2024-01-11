@@ -1,0 +1,4 @@
+service\controllers\FbJobFindController.class
+service\controllers\FbJobApplyController.class
+service\controllers\FbJobPostController.class
+service\FacebookApplication.class

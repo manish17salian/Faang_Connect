@@ -1,0 +1,113 @@
+version: '3.6'
+services:
+  rabbitmq:
+    image: "rabbitmq:3-management"  # Pulls the image from DockerHub if not in local
+    container_name: "rabbitmq"    # Defines container's name
+    ports:
+      - "5672:5672"  # AMQP
+      - "15672:15672"  # Management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: guest  # Sets RabbitMQ's login credentials
+      RABBITMQ_DEFAULT_PASS: guest  # Sets RabbitMQ's login credentials
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+
+  eureka-server:
+    build: eureka-server
+    depends_on:
+      - rabbitmq
+    ports:
+      - "8761:8761"
+    command: ["./wait.sh", "rabbitmq", "5672", "java -jar /eureka-server-0.0.1.jar"]
+
+  amazon:
+    build: amazon
+    depends_on:
+      - eureka-server
+      - rabbitmq
+      - notification
+    ports:
+      - "8082:8082"
+    command: ["/wait.sh", "rabbitmq", "5672","8761", "java -jar /amazon-0.0.1.jar"]
+
+  apple:
+    build: apple
+    depends_on:
+      - eureka-server
+      - rabbitmq
+      - notification
+    ports:
+      - "8083:8083"
+    command: ["/wait.sh", "rabbitmq", "5672","8761", "java -jar /apple-0.0.1.jar"]
+
+  netflix:
+    build: netflix
+    depends_on:
+      - eureka-server
+      - rabbitmq
+      - notification
+    ports:
+      - "8084:8084"
+    command: ["/wait.sh", "rabbitmq", "5672", "8761", "java -jar /netflix-0.0.1.jar"]
+
+  google:
+    build: google
+    depends_on:
+      - eureka-server
+      - rabbitmq
+      - notification
+    ports:
+      - "8085:8085"
+    command: ["/wait.sh", "rabbitmq", "5672", "8761", "java -jar /google-0.0.1.jar"]
+
+
+  facebook:
+    build: facebook
+    depends_on:
+      - eureka-server
+      - rabbitmq
+      - notification
+    ports:
+      - "8081:8081"
+    command: ["/wait.sh", "rabbitmq", "5672", "8761", "java -jar /facebook-0.0.1.jar"]
+
+  notification:
+    build: notification
+    depends_on:
+      # - eureka-server
+      - rabbitmq
+    ports:
+      - "8087:8087"
+    command: ["/wait.sh", "rabbitmq", "5672", "8761", "java -jar /notification-0.0.1.jar"]
+
+  login:
+    build: login
+    depends_on:
+     - eureka-server
+     - rabbitmq
+    ports:
+     - "8090:8090"
+    command: ["/wait.sh", "rabbitmq", "5672", "java -jar /login-0.0.1.jar"]
+
+  employee:
+    build: employee
+    environment:
+      NAME: employee
+    depends_on:
+      - eureka-server
+      - rabbitmq
+      - login
+      - notification
+      - amazon
+      - apple
+      - facebook
+      # - google
+      - netflix
+    ports:
+      - "8080:8080"
+    command: ["/wait.sh", "rabbitmq", "5672", "java -jar /employee-0.0.1.jar"]
+    
