@@ -32,7 +32,7 @@ services:
       - notification
     ports:
       - "8082:8082"
-    command: ["/wait.sh", "rabbitmq", "5672", "java -jar /amazon-0.0.1.jar"]
+    command: ["/wait.sh", "rabbitmq", "5672","8761", "java -jar /amazon-0.0.1.jar"]
 
   apple:
     build: apple
@@ -42,8 +42,7 @@ services:
       - notification
     ports:
       - "8083:8083"
-    command: ["/wait.sh", "rabbitmq", "5672", "java -jar /apple-0.0.1.jar"]
-
+    command: ["/wait.sh", "rabbitmq", "5672","8761", "java -jar /apple-0.0.1.jar"]
 
   netflix:
     build: netflix
@@ -53,8 +52,7 @@ services:
       - notification
     ports:
       - "8084:8084"
-    command: ["/wait.sh", "rabbitmq", "5672", "java -jar /netflix-0.0.1.jar"]
-
+    command: ["/wait.sh", "rabbitmq", "5672", "8761", "java -jar /netflix-0.0.1.jar"]
 
   google:
     build: google
@@ -64,7 +62,7 @@ services:
       - notification
     ports:
       - "8085:8085"
-    command: ["/wait.sh", "rabbitmq", "5672", "java -jar /google-0.0.1.jar"]
+    command: ["/wait.sh", "rabbitmq", "5672", "8761", "java -jar /google-0.0.1.jar"]
 
 
   facebook:
@@ -75,11 +73,7 @@ services:
       - notification
     ports:
       - "8081:8081"
-    command: ["/wait.sh", "rabbitmq", "5672", "java -jar /facebook-0.0.1.jar"]
-    
-    # command: bash -c "while ! nc -z rabbitmq 5672; do echo 'Waiting for RabbitMQ'; sleep 3; done && java -cp /amazon-0.0.1.jar AmazonApplication"
-    # #command: ["./Wait.sh", "rabbitmq:5672", "--", "java", "-jar", "/amazon-0.0.1.jar"]
-    #   restart: on-failure
+    command: ["/wait.sh", "rabbitmq", "5672", "8761", "java -jar /facebook-0.0.1.jar"]
 
   notification:
     build: notification
@@ -88,7 +82,7 @@ services:
       - rabbitmq
     ports:
       - "8087:8087"
-    command: ["/wait.sh", "rabbitmq", "5672", "java -jar /notification-0.0.1.jar"]
+    command: ["/wait.sh", "rabbitmq", "5672", "8761", "java -jar /notification-0.0.1.jar"]
 
   login:
     build: login
@@ -111,7 +105,7 @@ services:
       - amazon
       - apple
       - facebook
-      - google
+      # - google
       - netflix
     ports:
       - "8080:8080"
