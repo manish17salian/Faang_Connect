@@ -10,6 +10,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 import service.core.models.Job;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.ResponseEntity;
 import service.models.UserActivity;
@@ -32,19 +36,110 @@ public class JobFindController {
 
     @PostConstruct
     private void initServiceUris() {
+        int maxRetries = 10; // Maximum retries
+        long retryDelay = 40000; // Delay between retries in milliseconds (50 seconds)
+        int retryCount = 0;
+    
         serviceURLs = new ArrayList<>();
-        List<String> serviceIds = discoveryClient.getServices();
-        for (String serviceId : serviceIds) {
-            List<ServiceInstance> instances = discoveryClient.getInstances(serviceId);
-            for (ServiceInstance instance : instances) {
-                serviceURLs.add(instance.getUri().toString());
+    
+        while (retryCount < maxRetries) {
+            List<String> serviceIds = discoveryClient.getServices();
+            serviceURLs.clear(); // Clear previous entries
+    
+            for (String serviceId : serviceIds) {
+                List<ServiceInstance> instances = discoveryClient.getInstances(serviceId);
+                for (ServiceInstance instance : instances) {
+                    serviceURLs.add(instance.getUri().toString());
+                }
+            }
+    
+            if (serviceURLs.size() >= 1) {
+                System.out.println("Found 5 or more services.");
+                break;
+            } else {
+                System.out.println("Waiting for services to register. Attempt " + (retryCount + 1) + "/" + maxRetries);
+                try {
+                    Thread.sleep(retryDelay); // Wait before retrying
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt(); // Restore the interrupted status
+                    throw new IllegalStateException("Interrupted while waiting for services to register", ex);
+                }
+                retryCount++;
             }
         }
+    
+ 
+
+
+        // ExecutorService executorService = Executors.newFixedThreadPool(5);
+        // List<String> serviceURLs = new ArrayList<>();
+
+        // try {
+        //     for (int retryCount = 0; retryCount < 10; retryCount++) {
+        //         final int currentRetry = retryCount;
+        //         executorService.submit(() -> {
+        //             try {
+        //                 List<String> serviceIds = discoveryClient.getServices();
+        //                 for (String serviceId : serviceIds) {
+        //                     List<ServiceInstance> instances = discoveryClient.getInstances(serviceId);
+        //                     for (ServiceInstance instance : instances) {
+        //                         serviceURLs.add(instance.getUri().toString());
+        //                     }
+        //                 }
+
+        //                 if (serviceURLs.size() >= 3) {
+        //                     System.out.println("Found 3 or more services.");
+        //                     return;
+        //                 }
+        //             } catch (Exception e) {
+        //                 System.out.println("Error during service discovery: " + e.getMessage());
+        //             }
+
+        //             System.out.println("Waiting for services to register. Current Length is " + serviceURLs.size() + ". Attempt " + (currentRetry + 1) + "/" + 10);
+        //         });
+
+        //         Thread.sleep(retryDelay);
+        //     }
+        // } catch (InterruptedException ex) {
+        //     Thread.currentThread().interrupt();
+        //     System.out.println("Interrupted while waiting for service discovery tasks");
+        // } finally {
+        //     executorService.shutdown();
+        //     try {
+        //         if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
+        //             executorService.shutdownNow();
+        //             if (!executorService.awaitTermination(60, TimeUnit.SECONDS))
+        //                 System.err.println("Executor service did not terminate");
+        //         }
+        //     } catch (InterruptedException ex) {
+        //         executorService.shutdownNow();
+        //         Thread.currentThread().interrupt();
+        //     }
+        // }
+
+           if (serviceURLs.size() < 1) {
+            throw new IllegalStateException("Fewer than 5 services registered within the expected time.");
+        }
+        System.out.println("=========================================");
+        System.out.println("Registered Services: " + serviceURLs);
+        System.out.println("=========================================");
+
+            /*Running Code Locally*/
+
+        // serviceURLs = new ArrayList<>();
+        // List<String> serviceIds = discoveryClient.getServices();
+        // for (String serviceId : serviceIds) {
+        //     List<ServiceInstance> instances = discoveryClient.getInstances(serviceId);
+        //     for (ServiceInstance instance : instances) {
+        //         serviceURLs.add(instance.getUri().toString());
+        //     }
+        // }
         System.out.println("=========================================");
         System.out.println("=========================================");
         System.out.println(serviceURLs);
         System.out.println("=========================================");
         System.out.println("=========================================");
+    
 
     }
 
